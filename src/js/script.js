@@ -34,7 +34,7 @@ window.addEventListener('DOMContentLoaded', function() {
     period = document.querySelector("#period").getAttribute('value');
 
     function calcTotal() {
-        result.textContent = +tree + +period;
+        result.textContent = +tree + +period + " тонн";
     }
 
     calcTotal();
