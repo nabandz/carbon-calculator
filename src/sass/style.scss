@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&display=swap');
 @import '../css/reset.min.css';
 
 @import 'base/variables';
@@ -10,16 +10,18 @@
     margin: 0;
     padding: 0;
     border: 0;
+
+    box-sizing: border-box;
 }
 
 .container {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
     max-width: 1440px;
-    margin: 0 auto;
     padding: 0 25px;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 @import 'blocks/calculator';
