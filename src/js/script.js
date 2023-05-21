@@ -6,25 +6,50 @@ window.addEventListener('DOMContentLoaded', function() {
     slider.forEach((item) => {
         const sliderRange = item.querySelector(".range-slider__range");
         const sliderThumb = item.querySelector(".range-slider__thumb");
-        const sliderValue = item.querySelector(".range-slider__value");
+        const sliderValue = item.querySelector(".range-slider__value-input input");
         const sliderProgress = item.querySelector(".range-slider__progress");
 
-        function customSlider() {
+        function activeSlider() {
+			let currentValue = sliderRange.value;
+			sliderRange.value = currentValue;
+			sliderValue.value = currentValue;
+
             const maxValue = sliderRange.getAttribute("max");
-            const userValue = (sliderRange.value / maxValue) * 100 + "%";
-    
-            sliderValue.innerHTML = sliderRange.value;
+            const userValue = (currentValue / maxValue) * 100 + "%";
+
+            sliderValue.value = sliderRange.value;
 
             sliderProgress.style.width = userValue;
             sliderThumb.style.left = userValue;
-        }
-    
-        customSlider();
- 
-        sliderRange.addEventListener("input", () => {
-            customSlider();
-        });
-    })
+		}
+
+        activeSlider();
+
+        function activeSliderSliderInfo() {
+            if (+this.value > this.max) {
+                this.value = this.max;
+            }
+
+            else if (+this.value < this.min) {
+                this.value = this.min;
+            }
+
+			let currentValue = +this.value;
+			sliderRange.value = currentValue;
+			sliderValue.value = currentValue;
+
+            const maxValue = sliderRange.getAttribute("max");
+            const userValue = (currentValue / maxValue) * 100 + "%";
+
+            sliderValue.value = sliderRange.value;
+
+            sliderProgress.style.width = userValue;
+            sliderThumb.style.left = userValue;
+		}
+
+        sliderRange.addEventListener("input", activeSliderSliderInfo);
+	    sliderValue.addEventListener("input", activeSliderSliderInfo);
+    });
 
     //Calculatuon result
     const result = document.querySelector('.calculator__content span');
@@ -34,12 +59,12 @@ window.addEventListener('DOMContentLoaded', function() {
     period = document.querySelector("#period").getAttribute('value');
 
     function calcTotal() {
-        result.textContent = +tree + +period + " тонн";
+        result.textContent = +tree * +period + " тонн";
     }
 
     calcTotal();
 
-    function getDynamicInformation(selector) {
+    function getCalcInformation(selector) {
         const input = document.querySelector(selector);
 
         input.addEventListener('input', () => {
@@ -56,6 +81,25 @@ window.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    getDynamicInformation('#tree');
-    getDynamicInformation('#period');
+    getCalcInformation('#tree');
+    getCalcInformation('#period');
+
+    //Button style
+    function activeSliderButtonClass(selector, activeClass, inactiveClass) {
+        const elements = document.querySelectorAll(selector);
+
+        elements.forEach(elem => {
+            elem.addEventListener('click', (e) => {
+                if (!elem.classList.contains(inactiveClass)) {
+                    elements.forEach(elem => {
+                        elem.classList.remove(activeClass);
+                    });
+
+                    e.target.classList.add(activeClass);
+                }
+            });
+        });
+    }
+
+    activeSliderButtonClass('#trees div', 'calculator__choose-item_active', 'calculator__choose-item_inactive');
 });
