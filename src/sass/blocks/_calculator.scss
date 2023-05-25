@@ -1,6 +1,6 @@
 .calculator {
     height: 100vh;
-    background: url(../../img/Background.jpg) top (center/cover) no-repeat;
+    background: url(../img/Background.jpg) top (center/cover) no-repeat;
     &__title {
         font-weight: 700;
         font-size: 35px;
@@ -55,6 +55,7 @@
     &__choose-item {
         padding: 13px 15px;
         width: 50px;
+        cursor: pointer;
 
         border: 2px solid #000000;
         border-radius: 10px;
@@ -91,6 +92,7 @@
         color: #000000;
         border: 2px solid #000000;
         border-radius: 10px;
+        cursor: pointer;
 
         appearance: none;
         text-indent: 1px;
@@ -114,22 +116,29 @@
     }
     &__content {
         display: flex;
-        width: 284px;
-        height: 63px;
-
-        background: #3A9D3E;
-        border-radius: 10px;
-
+        column-gap: 10px;
         align-items: center;
-        justify-content: center;
         span {
-           font-weight: 700;
+            width: 250px;
+            font-weight: 700;
             font-size: 35px;
-            line-height: 43px;
-
+            line-height: 24px;
             text-align: center;
 
-            color: #FFFFFF;
+            color: #000000;
         }
+    }
+    &__btn {
+        padding: 10px 25px;
+        background: #3A9D3E;
+        border-radius: 10px;
+        cursor: pointer;
+
+        font-weight: 500;
+        font-size: 20px;
+        line-height: 24px;
+        text-align: center;
+
+        color: #FFFFFF;
     }
 }

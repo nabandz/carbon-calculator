@@ -64,19 +64,15 @@
         border: 2px solid #000000;
         border-radius: 10px;
 
-        input {
-            width: 100%;
-            outline: none;
-            font-weight: 500;
-            font-size: 20px;
-            line-height: 24px;
-            text-align: center;
-        }
-
-        input[type="number"]::-webkit-outer-spin-button,
-        input[type="number"]::-webkit-inner-spin-button {
-            -webkit-appearance: none
-        }
+        outline: none;
+        font-weight: 500;
+        font-size: 20px;
+        line-height: 24px;
+        text-align: center;
+    }
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none
     }
     &__progress {
         width: 50%;
