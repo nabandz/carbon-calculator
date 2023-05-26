@@ -23,15 +23,33 @@ const inputsRange = document.querySelectorAll('.range-slider__range');
 //Все кнопки выбора вида дерева
 const treesType = document.querySelectorAll('#trees-type div');
 
+//Все пункты выбора локаций
+const treesLocation = document.querySelector('.calculator__location');
+
 //Результат вычислений
 const result = document.querySelector('.calculator__content span');
 
+//Кнопка для вычисления результата
 const calculateBtn = document.querySelector('.calculator__btn');
 
-//Ссылка на JSON формат Google таблицы
-const googleURL = "https://script.googleusercontent.com/macros/echo?user_content_key=bvBSIlF2bjlXFvS5LZNjbJQczXJ_uoisj4NqwgLrzaDBhzucQmHxuLiqOnwwA3W26ENADkejXoWZu4YDgQrERcwEQxCF8Yapm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnC7HMnGsz6Xp2XhZ7BK8LvP3OMzkTxWfMkOfJDxTvul0Iw_0OIOkr-IRkpRCwcUE0U-IRuWuNmslrFExFD2-NEPMkkmxyZQDU9z9Jw9Md8uu&lib=Mue0-WLH1vOvvuPzGQMdMRljDP7qHGGZS";
+function checkInputMinMax(currentInput) {
+    if (+currentInput.value > currentInput.max) {
+        currentInput.value = currentInput.max;
+        return currentInput.value;
+    }
+
+    else if (+currentInput.value <= currentInput.min) {
+        currentInput.value = 1;
+        return currentInput.value;
+    }
+
+    return currentInput.value;
+}
 
 function assignValue() {
+    checkInputMinMax(treesCount);
+    checkInputMinMax(yearPeriod);
+
     treesCount.value = treesCountRange.value;
     yearPeriod.value = yearPeriodRange.value;
 
@@ -51,6 +69,9 @@ function assignValue() {
 assignValue();
 
 function assignValueRange() {
+    checkInputMinMax(treesCount);
+    checkInputMinMax(yearPeriod);
+
     treesCountRange.value = treesCount.value;
     yearPeriodRange.value = yearPeriod.value;
 
@@ -73,7 +94,9 @@ assignValueRange();
 for (let inputR of inputsRange) {
     inputR.addEventListener('input', () => {
         assignValue();
-        //calculatuon(treesCount.value, yearPeriod.value);
+
+        result.textContent = '__';
+        //calculation(treesCount.value, yearPeriod.value);
     })
 }
 
@@ -81,49 +104,79 @@ for (let inputR of inputsRange) {
 for (let inputV of inputsValue) {
     inputV.addEventListener('input', () => {
         assignValueRange();
-        //calculatuon(treesCount.value, yearPeriod.value);
+
+        result.textContent = '__';
+        //calculation(treesCount.value, yearPeriod.value);
     })
 }
 
-//Определение вида дерева
-//let currentTreeType = treesType[0];
+//Ссылка на данные из Google таблицы (JSON)
+let currentGoogleURL = '';
 
-for (let treeType of treesType) {
-    treeType.addEventListener('click', () => {
-        if (!treeType.classList.contains('calculator__choose-item_inactive')) {
+const googleSheets = [
+    {
+        treeType: 'pine',
+        location: 'good-pine',
+        googleURL: 'https://script.google.com/macros/s/AKfycbw2mXOFZNfriVzv2Ecx1-70zU-CroXpgMPmZWpkqnGB-PymY-2IaeOltmwZ5c2hU6HBTA/exec',
+    },
+    {
+        treeType: 'oak',
+        location: 'good-pine',
+        googleURL: 'https://script.google.com/macros/s/AKfycbw2mXOFZNfriVzv2Ecx1-70zU-CroXpgMPmZWpkqnGB-PymY-2IaeOltmwZ5c2hU6HBTA/exec',
+    },
+    {
+        treeType: 'pine',
+        location: 'normal-pine',
+        googleURL: 'https://script.google.com/macros/s/AKfycbypwpGBHND_2IOyPsB9z-K6FzMSqi9W36n6l04NuQREY7UkU6LbVL0Wdqz4e2wdRJ0rdg/exec',
+    },
+    {
+        treeType: 'oak',
+        location: 'normal-pine',
+        googleURL: 'https://script.google.com/macros/s/AKfycbypwpGBHND_2IOyPsB9z-K6FzMSqi9W36n6l04NuQREY7UkU6LbVL0Wdqz4e2wdRJ0rdg/exec',
+    },
+]
+
+//Определение выбранного вида дерева
+let currentTreeType = treesType[0].dataset.name;
+//console.log("Изначальный вид дерева: " + currentTreeType);
+
+for (let currentTree of treesType) {
+    currentTree.addEventListener('click', () => {
+        if (!currentTree.classList.contains('calculator__choose-item_inactive')) {
             for (let item of treesType) {
                 item.classList.remove('calculator__choose-item_active');
             }
-            treeType.classList.add('calculator__choose-item_active');
+            currentTree.classList.add('calculator__choose-item_active');
+
+            currentTreeType = currentTree.dataset.name;
+            //console.log("Выбранный вид дерева: " + currentTreeType);
+            selectGoogleSheet(currentTreeType, currentTreeLocation);
+
+            result.textContent = '__';
         }
     });
 }
 
-//Получение значений поглощения CO2
-async function assignCO2Value(yearPeriod = 25) {
-    const currentObj = await getResource(googleURL).then(data => data.sheetList.find(elem => elem.Age == yearPeriod));
-    let currentCO2Value = currentObj.CO2.toFixed(1);
-    console.log("Значение СО2: " + currentCO2Value);
-    return currentCO2Value;
-}
+//Определение выбранной локации
+let currentTreeLocation = treesLocation[0].value;
+//console.log("Изначальная локация: " + currentTreeLocation);
 
-//Рассчет поглощения СО2
-let previousYearPeriod = 0;
+treesLocation.addEventListener('change', () => {
+    currentTreeLocation = treesLocation.value;
+    //console.log("Выбранная локация: " + currentTreeLocation);
+    selectGoogleSheet(currentTreeType, currentTreeLocation);
 
-calculateBtn.addEventListener('click', () => {
-    calculatuon(treesCount.value, yearPeriod.value);
+    result.textContent = '__';
 });
 
-async function calculatuon(treesCount = 500, yearPeriod = 25) {
-    if (previousYearPeriod != yearPeriod) {
-        currentCO2 = await assignCO2Value(yearPeriod).then(value => value);
-    }
-    previousYearPeriod = yearPeriod;
-
-    result.textContent = Math.round(treesCount * currentCO2) + " тонн";
+//Определение необходимой Google таблицы
+function selectGoogleSheet(treeType = currentTreeType, treeLocation = currentTreeLocation) {
+    const currentOb = googleSheets.find(el => el.treeType == treeType && el.location == treeLocation);
+    currentGoogleURL = currentOb.googleURL;
+    //console.log("Выбранная таблица: " + currentGoogleURL);
 }
 
-//calculatuon(treesCount.value, yearPeriod.value);
+selectGoogleSheet();
 
 //Получение данных из Google таблицы
 async function getResource(url) {
@@ -135,3 +188,31 @@ async function getResource(url) {
 
     return await result.json();
 }
+
+//Получение значений поглощения CO2
+async function assignCO2Value(yearPeriod = 25) {
+    const currentObj = await getResource(currentGoogleURL).then(data => data.calculationResult.find(elem => elem.age == yearPeriod));
+    let currentCO2Value = currentObj.CO2Value.toFixed(1);
+    //console.log("Значение СО2: " + currentCO2Value + " для " + yearPeriod + " лет");
+
+    return currentCO2Value;
+}
+
+//Рассчет компенсации СО2
+let previousYearPeriod = 0;
+let previousGoogleURL = '';
+
+async function calculation(treesCount = 4000, yearPeriod = 25, googleURL) {
+    if (previousYearPeriod != yearPeriod || previousGoogleURL != googleURL) {
+        currentCO2 = await assignCO2Value(yearPeriod).then(value => value);
+    }
+    previousYearPeriod = yearPeriod;
+
+    result.textContent = Math.round((treesCount / 4000) * currentCO2) + " тонн СО2";
+}
+
+calculation(treesCount.value, yearPeriod.value);
+
+calculateBtn.addEventListener('click', () => {
+    calculation(treesCount.value, yearPeriod.value, currentGoogleURL);
+});

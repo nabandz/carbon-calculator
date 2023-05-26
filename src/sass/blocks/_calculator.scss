@@ -7,9 +7,7 @@
         line-height: 43px;
         text-align: center;
         text-transform: uppercase;
-
         color: #FFFFFF;
-
         text-shadow: 0px 0px 10px #000000;
     }
     &__wrapper {
@@ -21,17 +19,16 @@
         flex-direction: column;
         justify-content: space-between;
         row-gap: 25px;
-     
         background: #FFFFFF;
         box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
         border-radius: 25px;
     }
     &__subtitle {
-        font-weight: 500;
-        font-size: 35px;
+        width: 420px;
+        font-weight: 700;
+        font-size: 30px;
         line-height: 43px;
-
-        color: #000000;
+        color: #000;
     }
     &__type {
         display: flex;
@@ -41,7 +38,6 @@
             width: 272px;
             height: 54px;
             font-size: 20px;
-
             border: 1px solid #000000;
             border-radius: 15px;
         }
@@ -56,25 +52,24 @@
         padding: 13px 15px;
         width: 50px;
         cursor: pointer;
-
         border: 2px solid #000000;
         border-radius: 10px;
-
         font-weight: 500;
         font-size: 20px;
-
         color: #000000;
         &_active {
             border: 2px solid #3A9D3E;
             background: #3A9D3E;
-
             color: #FFFFFF;
         }
         &_inactive {
             border: 2px solid #C0C0C0;
-            background: #FFFFFF;
-            
+            background: #FFFFFF;   
             color: #C0C0C0;
+        }
+        &:hover {
+            transition: 0.4s all;
+            box-shadow: 0px 0px 7px 2px rgba(0, 0, 0, 0.25);
         }
     }
     &__geolocation {
@@ -93,7 +88,6 @@
         border: 2px solid #000000;
         border-radius: 10px;
         cursor: pointer;
-
         appearance: none;
         text-indent: 1px;
         text-overflow: '';
@@ -111,34 +105,43 @@
     &__result {
         width: 100%;
         display: flex;
+        align-items: center;
         justify-content: space-between;
         margin: 0 auto;
     }
     &__content {
         display: flex;
-        column-gap: 10px;
+        flex-direction: column;
+        row-gap: 10px;
         align-items: center;
         span {
-            width: 250px;
-            font-weight: 700;
-            font-size: 35px;
+            padding: 10px 25px;
+            width: 260px;
+            height: 48px;
+            font-weight: 500;
+            font-size: 20px;
             line-height: 24px;
             text-align: center;
-
             color: #000000;
+            border: 2px solid #3A9D3E;
+            border-radius: 10px;
         }
     }
     &__btn {
         padding: 10px 25px;
+        width: 260px;
+        height: 48px;
         background: #3A9D3E;
         border-radius: 10px;
         cursor: pointer;
-
         font-weight: 500;
         font-size: 20px;
         line-height: 24px;
         text-align: center;
-
         color: #FFFFFF;
+        &:hover {
+            transition: 0.4s all;
+            box-shadow: 0px 0px 7px 2px rgba(0, 0, 0, 0.25);
+        }
     }
 }
