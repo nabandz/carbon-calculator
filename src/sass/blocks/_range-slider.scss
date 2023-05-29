@@ -18,14 +18,21 @@
         margin: 0;
         &::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 20px;
-            height: 20px;
+            width: 24px;
+            height: 24px;
+            border-radius: 100%;
             cursor: pointer;
-            z-index: 3;
+            z-index: 2;
             position: relative;
+            background-color: #95DE1D;            
+        }
+        &_dark-green {
+            &::-webkit-slider-thumb {
+                background-color: #3A9D3E;
+            }
         }
     }
-    &__thumb {
+    /* &__thumb {
         position: absolute;
         width: 24px;
         height: 24px;
@@ -50,7 +57,7 @@
         &_dark-green {
             background: #3A9D3E;
         }
-    }
+    } */
     &__value-input {
         position: absolute;
         top: 0;
@@ -88,7 +95,6 @@
         align-items: center;
     }
     &__point {
-        width: 75px;
         font-weight: 300;
         font-size: 20px;
         line-height: 24px;

@@ -7,8 +7,8 @@ const treesCountRange = document.querySelector('#trees-count-range'),
       yearPeriodRange = document.querySelector('#year-period-range');
 
 //Ползунок input
-const treesCountThumb = document.querySelector('#trees-count-thumb'),
-      yearPeriodThumb = document.querySelector('#year-period-thumb');
+/* const treesCountThumb = document.querySelector('#trees-count-thumb'),
+      yearPeriodThumb = document.querySelector('#year-period-thumb'); */
 
 //Прогресс input
 const treesCountProgress = document.querySelector('#trees-count-progress'),
@@ -60,10 +60,10 @@ function assignValue() {
           userValueYear = (yearPeriod.value / maxValueYear) * 100 + "%";
 
     treesCountProgress.style.width = userValueTrees;
-    treesCountThumb.style.left = userValueTrees;
+    //treesCountThumb.style.left = userValueTrees;
 
     yearPeriodProgress.style.width = userValueYear;
-    yearPeriodThumb.style.left = userValueYear;
+    //yearPeriodThumb.style.left = userValueYear;
 }
 
 assignValue();
@@ -82,10 +82,10 @@ function assignValueRange() {
           userValueYear = (yearPeriodRange.value / maxValueYear) * 100 + "%";
 
     treesCountProgress.style.width = userValueTrees;
-    treesCountThumb.style.left = userValueTrees;
+    //treesCountThumb.style.left = userValueTrees;
 
     yearPeriodProgress.style.width = userValueYear;
-    yearPeriodThumb.style.left = userValueYear;
+    //yearPeriodThumb.style.left = userValueYear;
 }
 
 assignValueRange();
@@ -208,7 +208,7 @@ async function calculation(treesCount = 4000, yearPeriod = 25, googleURL) {
     }
     previousYearPeriod = yearPeriod;
 
-    result.textContent = Math.round((treesCount / 4000) * currentCO2) + " тонн СО2";
+    result.textContent = ((treesCount / 4000) * currentCO2).toFixed(3) + " тонн СО2";
 }
 
 calculation(treesCount.value, yearPeriod.value);
